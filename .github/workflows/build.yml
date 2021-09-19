@@ -221,15 +221,9 @@ jobs:
     - uses: actions/checkout@v2
     - name: install additional requirements
       run: |
-          FILENAME="libzip-1.7.1-static.tar.bz2"
-          curl -o $FILENAME.b64 -Ls "https://gist.github.com/nikias/3da15d03120382f87b44029cd8495a02/raw/99cd8138fed99e8f6530b6f179f787342c698e1f/libzip-1.7.1_static_${{matrix.arch}}-${{env.dest}}.tar.bz2"
-          base64 -d < $FILENAME.b64 > $FILENAME
-          mkdir deps
-          tar -C deps -xjf $FILENAME
-          echo "LIBZIP_CFLAGS=-I`pwd`/deps/include" >> $GITHUB_ENV
-          echo "LIBZIP_LIBS=`pwd`/deps/lib/libzip.a /${{env.dest}}/lib/libbz2.a /${{env.dest}}/lib/liblzma.a " >> $GITHUB_ENV
+          #
     - name: autogen
-      run: ./autogen.sh CC=gcc CXX=g++ --without-openssl libzip_CFLAGS="${{env.LIBZIP_CFLAGS}}" libzip_LIBS="${{env.LIBZIP_LIBS}}" zlib_LIBS="/${{env.dest}}/lib/libz.a"
+      run: ./autogen.sh CC=gcc CXX=g++
     - name: make
       run: make
     - name: make install
